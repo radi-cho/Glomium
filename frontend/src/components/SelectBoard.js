@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import getBoards from "../api/getBoards";
 
 class SelectBoard extends Component {
   constructor() {
@@ -10,7 +9,25 @@ class SelectBoard extends Component {
       error: null
     };
 
-    getBoards(this.receiveBoards);
+    fetch("https://gloapi.gitkraken.com/v1/glo/boards", {
+      credentials: "include"
+    })
+      .then(response => {
+        if (response.status !== 200) {
+          this.setState({
+            error:
+              "Looks like there was a problem. Status Code: " + response.status
+          });
+          return;
+        }
+
+        response.json().then(data => {
+          this.setState({ boards: data });
+        });
+      })
+      .catch(err => {
+        this.setState({ error: err.message });
+      });
   }
 
   receiveBoards = value => {
