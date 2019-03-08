@@ -1,0 +1,18 @@
+{
+  "short_name": "React App",
+  "name": "Create React App Sample",
+  "manifest_version": 2,
+  "version": "1.0",
+  "permissions": [
+    "declarativeContent",
+    "identity",
+    "storage",
+    "cookies",
+    "*://oaoiphpipnjpnbhjnmbkbpjdbeelafef.chromiumapp.org/",
+    "https://gloapi.gitkraken.com/"
+  ],
+  "browser_action": {
+    "default_popup": "index.html"
+  },
+  "content_security_policy": "default-src 'self'; script-src 'self' 'sha256-5As4+3YpY62+l38PsxCEkjB1R4YtyktBtRScTJ3fyLU='; style-src * 'unsafe-inline'; img-src 'self' data:; connect-src https://gloapi.gitkraken.com/;"
+}
