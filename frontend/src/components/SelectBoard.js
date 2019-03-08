@@ -30,17 +30,8 @@ class SelectBoard extends Component {
       });
   }
 
-  receiveBoards = value => {
-    if (value.boards) {
-      this.setState({ boards: value.boards });
-    } else {
-      this.setState({ error: value.error.message });
-    }
-  };
-
   render() {
     const { boards, error } = this.state;
-    console.log(boards);
     return (
       <div>
         {boards &&
