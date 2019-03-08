@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { getToken, cookieCheck } from "./api/auth";
+import { getToken, cookieCheck } from "./auth";
 import "./App.css";
 
 class App extends Component {
