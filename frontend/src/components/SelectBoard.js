@@ -31,14 +31,21 @@ class SelectBoard extends Component {
   }
 
   render() {
+    const props = this.props;
     const { boards, error } = this.state;
+    const params = props.match.params;
+
+    let isNew = !(params && params.purpose && params.purpose === "comment");
+
     return (
       <div>
         {boards &&
           boards.map(board => {
             return (
               <div>
-                <Link to="/create-card">{board.name}</Link>
+                <Link to={`/boards/${board.id}/cards${isNew ? "/new" : ""}`}>
+                  {board.name}
+                </Link>
               </div>
             );
           })}
