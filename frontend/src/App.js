@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import Menu from "./components/Menu";
 import { getToken, cookieCheck } from "./auth";
 import "./App.css";
 
@@ -36,7 +36,7 @@ class App extends Component {
     const { token, error } = this.state;
     return (
       <div className="App">
-        {token && <Link to="/boards">+</Link>}
+        {token && <Menu/>}
         {error && <header className="App-header">{error}</header>}
         {!token && !error && "Loading..."}
       </div>
