@@ -16,7 +16,6 @@ function Stop() {
 function Reset() {
   Stop();
   seconds = 0;
-  UpdateBadges();
 }
 
 function Update() {
