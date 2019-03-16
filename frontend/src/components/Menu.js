@@ -6,6 +6,7 @@ const Menu = () => {
     <div>
       <div><Link to="/boards/card">New Card</Link></div>
       <div><Link to="/boards/comment">Comment</Link></div>
+      <div><Link to="/timer">Timer</Link></div>
     </div>
   );
 };
