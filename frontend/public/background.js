@@ -2,9 +2,8 @@ var seconds = 0;
 var interval = null;
 var appUpdate = null;
 
-function Start(updateMethod) {
+function Start() {
   if (!interval) interval = setInterval(Update, 1000);
-  appUpdate = updateMethod;
 }
 
 function Stop() {
@@ -17,6 +16,7 @@ function Stop() {
 function Reset() {
   Stop();
   seconds = 0;
+  appUpdate();
 }
 
 function Update() {

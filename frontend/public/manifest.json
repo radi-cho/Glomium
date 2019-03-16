@@ -16,7 +16,7 @@
   },
   "background": {
     "scripts": ["background.js"],
-    "persistent": false
+    "persistent": true
   },
   "content_security_policy": "default-src 'self'; script-src 'self' 'sha256-5As4+3YpY62+l38PsxCEkjB1R4YtyktBtRScTJ3fyLU='; style-src * 'unsafe-inline'; img-src 'self' data:; connect-src https://gloapi.gitkraken.com/;"
 }

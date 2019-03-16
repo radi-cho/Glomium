@@ -5,13 +5,14 @@ class Timer extends React.Component {
   constructor() {
     super();
     this.backgroundPage = chrome.extension.getBackgroundPage();
+    this.backgroundPage.appUpdate = this.Update;
     this.state = {
       seconds: this.backgroundPage.seconds
     };
   }
 
   Start = () => {
-    this.backgroundPage.Start(this.Update);
+    this.backgroundPage.Start();
   };
 
   Stop = () => {
@@ -23,7 +24,7 @@ class Timer extends React.Component {
   };
 
   Update = seconds => {
-    this.setState({ seconds: seconds });
+    this.setState({ seconds: seconds ? seconds : "0" });
   };
 
   render() {
