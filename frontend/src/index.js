@@ -4,7 +4,8 @@ import { MemoryRouter as Router, Switch, Route } from "react-router-dom";
 import SelectBoard from "./components/SelectBoard";
 import CreateCard from "./components/CreateCard";
 import SelectCard from "./components/SelectCard";
-import Comment from './components/Comment';
+import Comment from "./components/Comment";
+import Timer from "./components/Timer";
 import App from "./App";
 
 import * as serviceWorker from "./serviceWorker";
@@ -19,6 +20,8 @@ ReactDOM.render(
       {/* Select card to leave comment: */}
       <Route path="/boards/:boardId/cards" component={SelectCard} />
       <Route path="/boards/:purpose" component={SelectBoard} />
+      {/* Specialized pages for timer and screenshots. */}
+      <Route path="/timer" component={Timer} />
     </Switch>
   </Router>,
   document.getElementById("root")
