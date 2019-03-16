@@ -1,3 +1,4 @@
+/* global chrome */
 function dataURLtoBlob(dataurl) {
   var arr = dataurl.split(","),
     mime = arr[0].match(/:(.*?);/)[1],
@@ -10,20 +11,23 @@ function dataURLtoBlob(dataurl) {
   return new Blob([u8arr], { type: mime });
 }
 
-var dataurl = "data:text/plain;base64,aGVsbG8gd29ybGQ=";
-var blob = dataURLtoBlob(dataurl);
-var fd = new FormData();
-fd.append("file", blob, "hello.txt");
+function screenshot() {
+  chrome.tabs.captureVisibleTab(function(dataURL) {
+    var blob = dataURLtoBlob(dataURL);
+    var fd = new FormData();
+    fd.append("file", blob, "hello.txt");
 
-fetch(
-  "https://gloapi.gitkraken.com/v1/glo/boards/5c6c35713cf503024f842327/cards/5c7a373f3910a1000fb48331/attachments",
-  { method: "POST", body: fd }
-)
-  .then(response => {
-    response.json().then(data => {
-      console.log(data);
-    });
-  })
-  .catch(err => {
-    console.log(err.message);
+    fetch(
+      "https://gloapi.gitkraken.com/v1/glo/boards/5c6c35713cf503024f842327/cards/5c7a373f3910a1000fb48331/attachments",
+      { method: "POST", body: fd }
+    )
+      .then(response => {
+        response.json().then(data => {
+          console.log(data);
+        });
+      })
+      .catch(err => {
+        console.log(err.message);
+      });
   });
+}
