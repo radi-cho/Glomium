@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Menu from "./components/Menu";
 import { getToken, cookieCheck } from "./scripts/auth";
-import "./App.css";
+import "./styles/App.css";
 
 class App extends Component {
   constructor() {

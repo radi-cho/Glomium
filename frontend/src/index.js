@@ -9,7 +9,7 @@ import Timer from "./components/Timer";
 import App from "./App";
 
 import * as serviceWorker from "./serviceWorker";
-import "./index.css";
+import "./styles/index.css";
 
 ReactDOM.render(
   <Router>
