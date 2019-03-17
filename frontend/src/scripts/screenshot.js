@@ -1,6 +1,6 @@
 /* global chrome */
-function dataURLtoBlob(dataurl) {
-  var arr = dataurl.split(","),
+const dataURLtoBlob = dataurl => {
+  const arr = dataurl.split(","),
     mime = arr[0].match(/:(.*?);/)[1],
     bstr = atob(arr[1]),
     n = bstr.length,
@@ -9,12 +9,12 @@ function dataURLtoBlob(dataurl) {
     u8arr[n] = bstr.charCodeAt(n);
   }
   return new Blob([u8arr], { type: mime });
-}
+};
 
-function screenshot() {
-  chrome.tabs.captureVisibleTab(function(dataURL) {
-    var blob = dataURLtoBlob(dataURL);
-    var fd = new FormData();
+const screenshot = () => {
+  chrome.tabs.captureVisibleTab(dataURL => {
+    const blob = dataURLtoBlob(dataURL);
+    const fd = new FormData();
     fd.append("file", blob, "hello.txt");
 
     fetch(
@@ -30,4 +30,4 @@ function screenshot() {
         console.log(err.message);
       });
   });
-}
+};

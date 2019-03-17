@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Menu from "./components/Menu";
-import { getToken, cookieCheck } from "./auth";
+import { getToken, cookieCheck } from "./scripts/auth";
 import "./App.css";
 
 class App extends Component {
