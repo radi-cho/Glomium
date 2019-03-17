@@ -1,0 +1,15 @@
+.menu-container {
+  display: -webkit-flex;
+  display: flex;
+  justify-content: space-between;
+}
+
+.menu-container > a > div {
+  text-align: center;
+  width: 90px;
+  height: 90px;
+
+  background: #5bc0be;
+  border: 5px solid #028090;
+  border-radius: 20px;
+}
