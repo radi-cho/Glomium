@@ -11,9 +11,12 @@ class SelectCard extends Component {
 
     const boardId = props.match.params.boardId;
     if (boardId) {
-      fetch(`https://gloapi.gitkraken.com/v1/glo/boards/${boardId}/cards`, {
-        credentials: "include"
-      })
+      fetch(
+        `https://gloapi.gitkraken.com/v1/glo/boards/${boardId}/cards?fields=board_id&fields=description&fields=name`,
+        {
+          credentials: "include"
+        }
+      )
         .then(response => {
           if (response.status !== 200) {
             this.setState({
@@ -45,7 +48,7 @@ class SelectCard extends Component {
             return (
               <div>
                 <Link to={`/boards/${boardId}/cards/${card.id}/comment`}>
-                  {card.name}
+                  {card.description && card.description.text}
                 </Link>
               </div>
             );
