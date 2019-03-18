@@ -1,0 +1,26 @@
+.card-container {
+  width: 140px;
+  max-height: 75px;
+  padding: 10px 5px;
+  margin: 2px;
+
+  display: inline-block;
+  text-align: center;
+
+  background: #5bc0be;
+  border: 2px solid #028090;
+  border-radius: 5px;
+
+  cursor: pointer;
+}
+
+.card-title {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.card-description {
+  font-size: 11px;
+  font-weight: 400;
+  color: #00535d;
+}

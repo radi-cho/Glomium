@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import InfoCard from "./InfoCard";
 
 class SelectCard extends Component {
   constructor(props) {
@@ -46,11 +46,11 @@ class SelectCard extends Component {
         {cards &&
           cards.map(card => {
             return (
-              <div>
-                <Link to={`/boards/${boardId}/cards/${card.id}/comment`}>
-                  {card.description && card.description.text}
-                </Link>
-              </div>
+                <InfoCard
+                  title={card.name}
+                  redirect={`/boards/${boardId}/cards/${card.id}/comment`}
+                  description={card.description && card.description.text}
+                />
             );
           })}
         {error && <header className="SelectCard-header">{error}</header>}
