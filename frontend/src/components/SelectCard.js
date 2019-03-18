@@ -42,7 +42,7 @@ class SelectCard extends Component {
     const boardId = this.props.match.params.boardId;
 
     return (
-      <div>
+      <>
         {cards &&
           cards.map(card => {
             return (
@@ -55,7 +55,7 @@ class SelectCard extends Component {
           })}
         {error && <header className="SelectCard-header">{error}</header>}
         {!cards && !error && "Loading..."}
-      </div>
+      </>
     );
   }
 }

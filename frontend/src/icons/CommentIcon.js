@@ -4,7 +4,6 @@ const CommentIcon = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      enable-background="new 0 0 512 512"
       id="Layer_1"
       version="1.1"
       viewBox="50 50 412 412"

@@ -38,7 +38,7 @@ class SelectBoard extends Component {
     let isNew = !(params && params.purpose && params.purpose === "comment");
 
     return (
-      <div>
+      <>
         {boards &&
           boards.map(board => {
             return (
@@ -59,7 +59,7 @@ class SelectBoard extends Component {
         >
           Manage your boards.
         </button>
-      </div>
+      </>
     );
   }
 }
