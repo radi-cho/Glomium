@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import InfoCard from "./InfoCard";
+import "../styles/SelectBoard.css";
 
 class SelectBoard extends Component {
   constructor() {
@@ -39,18 +41,22 @@ class SelectBoard extends Component {
 
     return (
       <>
+        <div>
+          <b>Select a board{isNew ? " to create a card inside." : "."}</b>
+        </div>
         {boards &&
           boards.map(board => {
             return (
-              <div>
-                <Link to={`/boards/${board.id}/cards${isNew ? "/new" : ""}`}>
-                  {board.name}
-                </Link>
-              </div>
+              <Link to={`/boards/${board.id}/cards${isNew ? "/new" : ""}`}>
+                <InfoCard
+                  title={board.name}
+                  description="Click here to create card."
+                />
+              </Link>
             );
           })}
         {error && <header className="SelectBoard-header">{error}</header>}
-        {!boards && !error && "Loading..."}
+        {!boards && !error && <b>"Loading..."</b>}
         <br />
         <button
           onClick={() => {

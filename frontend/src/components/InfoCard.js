@@ -5,7 +5,7 @@ import "../styles/InfoCard.css";
 const Card = ({ title, description, redirect, history }) => {
   if (typeof title === "string" && title.trim()) {
     const trimmed = title.trim();
-    title = trimmed.length > 16 ? trimmed.substring(0, 16) + "..." : trimmed;
+    title = trimmed.length > 19 ? trimmed.substring(0, 16) + "..." : trimmed;
   } else {
     title = "Unnamed card.";
   }
@@ -16,7 +16,7 @@ const Card = ({ title, description, redirect, history }) => {
     const trimmed = description.trim();
     if (trimmed)
       description =
-        trimmed.length > 26 ? trimmed.substring(0, 26) + "..." : trimmed;
+        trimmed.length > 29 ? trimmed.substring(0, 26) + "..." : trimmed;
   } else {
     description = "No description provided.";
   }
