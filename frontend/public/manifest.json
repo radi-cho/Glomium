@@ -6,6 +6,7 @@
   "permissions": [
     "declarativeContent",
     "identity",
+    "activeTab",
     "storage",
     "cookies",
     "*://oaoiphpipnjpnbhjnmbkbpjdbeelafef.chromiumapp.org/",

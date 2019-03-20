@@ -56,7 +56,7 @@ class SelectBoard extends Component {
             );
           })}
         {error && <header className="SelectBoard-header">{error}</header>}
-        {!boards && !error && <b>"Loading..."</b>}
+        {!boards && !error && <b>Loading...</b>}
         <br />
         <button
           onClick={() => {
