@@ -1,0 +1,28 @@
+textarea,
+input {
+  width: 94%;
+  margin: 0 0 5px 0;
+}
+
+textarea {
+  border: 1px solid grey;
+  border-radius: 3.5px;
+  background: #fafafa;
+  padding-left: 3px;
+  padding-right: 3px;
+  height: 150px;
+}
+
+#choose_file {
+  color: black;
+  font-size: 16px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgb(30, 100, 160);
+  background: rgb(91, 192, 190);
+  border-radius: 3px;
+  position: relative;
+  padding: 1px 15px;
+  top: 1px;
+  margin: 3px;
+}
