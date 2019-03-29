@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import Button from "../components/Button";
+import SelectColumn from "../components/SelectColumn";
 import InfoCard from "./InfoCard";
 import "../styles/SelectBoard.css";
 
@@ -11,7 +13,7 @@ class SelectBoard extends Component {
       error: null
     };
 
-    fetch("https://gloapi.gitkraken.com/v1/glo/boards", {
+    fetch("https://gloapi.gitkraken.com/v1/glo/boards?fields=columns&fields=name", {
       credentials: "include"
     })
       .then(response => {
@@ -47,24 +49,30 @@ class SelectBoard extends Component {
         {boards &&
           boards.map(board => {
             return (
-              <Link to={`/boards/${board.id}/cards${isNew ? "/new" : ""}`}>
-                <InfoCard
-                  title={board.name}
-                  description="Click here to create card."
-                />
-              </Link>
+              <>
+                {isNew ? (
+                  <SelectColumn board={board} />
+                ) : (
+                  <Link to={`/boards/${board.id}/cards/`}>
+                    <InfoCard
+                      title={board.name}
+                      description="Click here to create card."
+                    />
+                  </Link>
+                )}
+              </>
             );
           })}
         {error && <header className="SelectBoard-header">{error}</header>}
         {!boards && !error && <b>Loading...</b>}
         <br />
-        <button
+        <Button
           onClick={() => {
             window.open("https://app.gitkraken.com/glo/", "_blank");
           }}
         >
           Manage your boards.
-        </button>
+        </Button>
       </>
     );
   }
