@@ -1,4 +1,5 @@
 import React from "react";
+import Button from "../components/Button";
 
 /* global chrome */
 class Timer extends React.Component {
@@ -32,13 +33,13 @@ class Timer extends React.Component {
     return (
       <div>
         <div>
-          <button onClick={Start}>Start</button>
+          <Button onClick={Start}>Start</Button>
         </div>
         <div>
-          <button onClick={Reset}>Reset</button>
+          <Button onClick={Reset}>Reset</Button>
         </div>
         <div>
-          <button onClick={Stop}>Stop</button>
+          <Button onClick={Stop}>Stop</Button>
         </div>
         {state.seconds}
       </div>
