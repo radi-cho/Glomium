@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { MemoryRouter as Router, Switch, Route } from "react-router-dom";
 import SelectBoard from "./components/SelectBoard";
-import CreateCard from "./components/CreateCard";
+import CreateItem from "./components/CreateItem";
 import SelectCard from "./components/SelectCard";
 import Comment from "./components/Comment";
 import Timer from "./components/Timer";
@@ -16,7 +16,7 @@ ReactDOM.render(
     <Switch>
       <Route exact path="/" component={App} />
       <Route path="/boards/:boardId/cards/:card/comment" component={Comment} />
-      <Route path="/boards/:boardId/cards/new" component={CreateCard} />
+      <Route path="/boards/:boardId/cards/new/:columnId" component={CreateItem} />
       {/* Select card to leave comment: */}
       <Route path="/boards/:boardId/cards" component={SelectCard} />
       <Route path="/boards/:purpose" component={SelectBoard} />
