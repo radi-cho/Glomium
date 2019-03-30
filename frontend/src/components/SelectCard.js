@@ -57,7 +57,11 @@ class SelectCard extends Component {
                 <InfoCard
                   title={card.name}
                   redirect={`/boards/${boardId}/cards/${card.id}/comment`}
-                  description={card.description && card.description.text}
+                  description={
+                    card.description && card.description.text.trim()
+                      ? card.description.text
+                      : "Post a comment here."
+                  }
                 />
               );
             })

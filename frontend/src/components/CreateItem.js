@@ -16,7 +16,8 @@ class CreateItem extends React.Component {
     // or the id of a card if posting a comment.
     id: this.props.match.params.id,
     files: [],
-    isCard: this.props.match.params.role === "new"
+    isCard: this.props.match.params.role === "new",
+    warning: null
   };
 
   componentDidMount = () => {
@@ -33,6 +34,21 @@ class CreateItem extends React.Component {
 
   publish = ev => {
     ev.preventDefault();
+    const { isCard, name, description } = this.state;
+
+    // Clear any past warnings
+    this.setState({ warning: null });
+
+    if (isCard && (!name || !name.trim())) {
+      this.setState({ warning: "No name provided!" });
+      return;
+    }
+
+    if (!isCard && (!description || !description.trim())) {
+      this.setState({ warning: "Missing comment!" });
+      return;
+    }
+
     backgroundPage.publishItem(this.state);
   };
 
@@ -130,7 +146,7 @@ class CreateItem extends React.Component {
   };
 
   render() {
-    const { files, name, description, isCard, boardId } = this.state;
+    const { files, name, description, isCard, boardId, warning } = this.state;
     return (
       <form>
         {isCard && (
@@ -184,11 +200,12 @@ class CreateItem extends React.Component {
             />
           </label>
         )}
-        {files.length
-          ? files.map((f, i) => {
+        {files.length ? (
+          <>
+            <b>Attachments:</b>
+            {files.map((f, i) => {
               return (
                 <div style={{ marginLeft: 5 }}>
-                  <b>Attachments:</b>
                   {f.name || "screenshot"}{" "}
                   <b
                     style={{ cursor: "pointer" }}
@@ -200,9 +217,13 @@ class CreateItem extends React.Component {
                   </b>
                 </div>
               );
-            })
-          : ""}
+            })}
+          </>
+        ) : (
+          ""
+        )}
         <div>
+          {warning && <div style={{ marginLeft: 5 }}>{warning}</div>}
           <Button onClick={this.publish}>Publish</Button>
           <Link to={isCard ? "/boards/new" : `/boards/${boardId}/cards/`}>
             <Button>Back</Button>
