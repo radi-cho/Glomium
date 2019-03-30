@@ -5,19 +5,22 @@ import SelectColumn from "../components/SelectColumn";
 import InfoCard from "./InfoCard";
 import "../styles/SelectBoard.css";
 
+/*global chrome*/
+var backgroundPage = chrome.extension.getBackgroundPage();
+
 class SelectBoard extends Component {
   constructor() {
     super();
     this.state = {
       boards: null,
-      error: null
+      error: null,
+      selectColumn: false
     };
 
     fetch(
-      "https://gloapi.gitkraken.com/v1/glo/boards?fields=columns&fields=name",
-      {
-        credentials: "include"
-      }
+      `https://gloapi.gitkraken.com/v1/glo/boards?access_token=${
+        backgroundPage.accessToken
+      }&fields=columns&fields=name`
     )
       .then(response => {
         if (response.status !== 200) {
@@ -39,43 +42,47 @@ class SelectBoard extends Component {
 
   render() {
     const props = this.props;
-    const { boards, error } = this.state;
+    const { boards, error, selectColumn } = this.state;
     const params = props.match.params;
-
-    let isNew = !(params && params.purpose && params.purpose === "comment");
+    const isNew = !(params && params.purpose && params.purpose === "comment");
 
     return (
       <>
-        <div>
-          <b>Select a board{isNew ? " to create a card inside." : "."}</b>
-        </div>
-        {boards &&
-          boards.map(board => {
-            return (
-              <>
-                {isNew ? (
-                  <SelectColumn board={board} />
-                ) : (
-                  <Link to={`/boards/${board.id}/cards/`}>
-                    <InfoCard
-                      title={board.name}
-                      description="Click here to create card."
-                    />
-                  </Link>
-                )}
-              </>
-            );
-          })}
-        {error && <header className="SelectBoard-header">{error}</header>}
-        {!boards && !error && <b>Loading...</b>}
-        <br />
-        <Button
-          onClick={() => {
-            window.open("https://app.gitkraken.com/glo/", "_blank");
-          }}
-        >
-          Manage your boards.
-        </Button>
+        {selectColumn ? (
+          <SelectColumn board={selectColumn} />
+        ) : (
+          <>
+            <div>
+              <b>Select a board{isNew ? " to create a card inside." : "."}</b>
+            </div>
+            {boards &&
+              boards.map(board => {
+                return (
+                  <InfoCard
+                    title={board.name}
+                    description="Click to select this board."
+                    redirect={`/boards/${board.id}/cards/`}
+                    clickHandler={
+                      isNew &&
+                      (() => {
+                        this.setState({ selectColumn: board });
+                      })
+                    }
+                  />
+                );
+              })}
+            {error && <header className="SelectBoard-header">{error}</header>}
+            {!boards && !error && <b>Loading...</b>}
+            <br />
+            <Button
+              onClick={() => {
+                window.open("https://app.gitkraken.com/glo/", "_blank");
+              }}
+            >
+              Manage your boards.
+            </Button>
+          </>
+        )}
       </>
     );
   }
