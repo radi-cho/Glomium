@@ -4,7 +4,6 @@ import { MemoryRouter as Router, Switch, Route } from "react-router-dom";
 import SelectBoard from "./components/SelectBoard";
 import CreateItem from "./components/CreateItem";
 import SelectCard from "./components/SelectCard";
-import Comment from "./components/Comment";
 import Timer from "./components/Timer";
 import App from "./App";
 

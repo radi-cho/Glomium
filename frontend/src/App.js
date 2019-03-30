@@ -34,12 +34,19 @@ class App extends Component {
     }
   };
 
+  logout = () => {
+    chrome.storage.local.remove("accessToken");
+    this.setState({ token: "" });
+    window.close();
+  };
+
   render() {
-    backgroundPage.accessToken = this.state.token;
     const { token, error } = this.state;
+    backgroundPage.accessToken = token;
+
     return (
       <div className="App">
-        {token && <Menu />}
+        {token && <Menu logoutMethod={this.logout} />}
         {error && <header className="App-header">{error}</header>}
         {!token && !error && "Loading..."}
       </div>
