@@ -1,23 +1,25 @@
 import React, { Component } from "react";
 import Menu from "./components/Menu";
-import { getToken, cookieCheck } from "./scripts/auth";
+import { getToken, storageCheck } from "./scripts/auth";
 import "./styles/App.css";
+
+/*global chrome*/
+var backgroundPage = chrome.extension.getBackgroundPage();
 
 class App extends Component {
   constructor() {
     super();
-
     this.state = {
       token: null,
       error: null
     };
-    cookieCheck(this.receiveCookie);
+    storageCheck(this.storageReceiver);
   }
 
-  // Called after checking the cookies for stored token
-  receiveCookie = cookie => {
-    if (cookie) {
-      this.setState({ token: cookie.value });
+  // Called after checking the storage for stored token
+  storageReceiver = token => {
+    if (token) {
+      this.setState({ token: token });
     } else {
       getToken(this.receiveToken);
     }
@@ -33,10 +35,11 @@ class App extends Component {
   };
 
   render() {
+    backgroundPage.accessToken = this.state.token;
     const { token, error } = this.state;
     return (
       <div className="App">
-        {token && <Menu/>}
+        {token && <Menu />}
         {error && <header className="App-header">{error}</header>}
         {!token && !error && "Loading..."}
       </div>

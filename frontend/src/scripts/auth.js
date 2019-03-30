@@ -1,14 +1,8 @@
 /*global chrome*/
-export const cookieCheck = callback => {
-  chrome.cookies.get(
-    {
-      url: "http://oaoiphpipnjpnbhjnmbkbpjdbeelafef.chromiumapp.org/",
-      name: "accessToken"
-    },
-    cookie => {
-      callback(cookie);
-    }
-  );
+export const storageCheck = callback => {
+  chrome.storage.local.get(["accessToken"], result => {
+    callback(result.accessToken);
+  });
 };
 
 export const getToken = callback => {
@@ -45,16 +39,13 @@ export const getToken = callback => {
       return;
     }
 
-    let cookieDetails = {
-      url: "http://oaoiphpipnjpnbhjnmbkbpjdbeelafef.chromiumapp.org/",
-      name: "accessToken",
-      value: token,
-      expirationDate: Math.floor(new Date() / 1000 + 14 * 24 * 60 * 60)
-    };
-
-    chrome.cookies.set(cookieDetails, cookie => {
-      console.log(cookie);
-    });
+    // expirationDate: Math.floor(new Date() / 1000 + 14 * 24 * 60 * 60)
+    chrome.storage.local.set(
+      {
+        accessToken: token
+      },
+      result => {}
+    );
 
     callback({ token: token });
   });
