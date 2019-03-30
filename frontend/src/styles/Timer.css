@@ -1,0 +1,11 @@
+#timerContainer button {
+  width: 30%;
+}
+
+#timerContainer #postButton {
+  width: 62%;
+}
+
+#time {
+  font-size: 75px;
+}

@@ -1,5 +1,7 @@
 import React from "react";
 import Button from "../components/Button";
+import { Link } from "react-router-dom";
+import "../styles/Timer.css";
 
 /* global chrome */
 class Timer extends React.Component {
@@ -28,20 +30,29 @@ class Timer extends React.Component {
     this.setState({ timestamp: timestamp });
   };
 
+  PostComment = () => {
+    this.backgroundPage.timerInComment = true;
+    console.log("hello");
+  };
+
   render() {
     const { Start, Stop, Reset, state } = this;
     return (
-      <div style={{ textAlign: "center" }}>
-        <Button style={{ width: "30%" }} onClick={Start}>
-          Start
-        </Button>
-        <Button style={{ width: "30%" }} onClick={Reset}>
-          Reset
-        </Button>
-        <Button style={{ width: "30%" }} onClick={Stop}>
-          Stop
-        </Button>
+      <div id="timerContainer" style={{ textAlign: "center" }}>
+        <Button onClick={Start}>Start</Button>
+        <Button onClick={Reset}>Reset</Button>
+        <Button onClick={Stop}>Stop</Button>
         <div id="time">{state.timestamp}</div>
+        <div>
+          <Link to={`/`}>
+            <Button>Back</Button>
+          </Link>
+          <Link to={`/boards/comment`}>
+            <Button id="postButton" onClick={this.PostComment}>
+              Post as comment.
+            </Button>
+          </Link>
+        </div>
       </div>
     );
   }
