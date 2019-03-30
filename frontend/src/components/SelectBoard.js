@@ -55,32 +55,39 @@ class SelectBoard extends Component {
             <div>
               <b>Select a board{isNew ? " to create a card inside." : "."}</b>
             </div>
-            {boards &&
-              boards.map(board => {
-                return (
-                  <InfoCard
-                    title={board.name}
-                    description="Click to select this board."
-                    redirect={`/boards/${board.id}/cards/`}
-                    clickHandler={
-                      isNew &&
-                      (() => {
-                        this.setState({ selectColumn: board });
-                      })
-                    }
-                  />
-                );
-              })}
+            {boards ? (
+              boards.length ? (
+                boards.map(board => {
+                  return (
+                    <InfoCard
+                      title={board.name}
+                      description="Click to select this board."
+                      redirect={`/boards/${board.id}/cards/`}
+                      clickHandler={
+                        isNew &&
+                        (() => {
+                          this.setState({ selectColumn: board });
+                        })
+                      }
+                    />
+                  );
+                })
+              ) : (
+                <b>No boards found</b>
+              )
+            ) : (
+              <b>Loading...</b>
+            )}
             {error && <header className="SelectBoard-header">{error}</header>}
-            {!boards && !error && <b>Loading...</b>}
             <br />
             <Button
               onClick={() => {
                 window.open("https://app.gitkraken.com/glo/", "_blank");
               }}
             >
-              Manage your boards.
+              Manage your boards
             </Button>
+            <Link to={`/`}><Button>Back</Button></Link>
           </>
         )}
       </>
