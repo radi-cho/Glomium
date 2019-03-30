@@ -34,9 +34,9 @@ function formatTime() {
 
   if (hours || seconds || minutes) {
     return (
-      (hours ? (hours < 9 ? "0" + hours : hours) + ":" : "00:") +
-      (minutes ? (minutes < 9 ? "0" + minutes : minutes) + ":" : "00:") +
-      (seconds < 9 ? "0" + seconds : seconds)
+      (hours ? (hours <= 9 ? "0" + hours : hours) + ":" : "00:") +
+      (minutes ? (minutes <= 9 ? "0" + minutes : minutes) + ":" : "00:") +
+      (seconds <= 9 ? "0" + seconds : seconds)
     );
   }
 
@@ -44,12 +44,13 @@ function formatTime() {
 }
 
 /// Attachment publishing
+var accessToken = "";
 var attachmentCount = 0;
 
 var fetchItem = state => {
   if (state.isCard) {
     return fetch(
-      `https://gloapi.gitkraken.com/v1/glo/boards/${state.boardId}/cards`,
+      `https://gloapi.gitkraken.com/v1/glo/boards/${state.boardId}/cards?access_token=${accessToken}`,
       {
         method: "POST",
         headers: new Headers({ "content-type": "application/json" }),
@@ -67,7 +68,7 @@ var fetchItem = state => {
     return fetch(
       `https://gloapi.gitkraken.com/v1/glo/boards/${state.boardId}/cards/${
         state.id
-      }/comments`,
+      }/comments?access_token=${accessToken}`,
       {
         method: "POST",
         headers: new Headers({ "content-type": "application/json" }),
@@ -101,7 +102,7 @@ function publishAttachment(item, state) {
   fetch(
     `https://gloapi.gitkraken.com/v1/glo/boards/${state.boardId}/cards/${
       isCard ? item.id : state.id
-    }/attachments`,
+    }/attachments?access_token=${accessToken}`,
     { method: "POST", body: fd }
   )
     .then(response => {
@@ -118,10 +119,10 @@ function publishAttachment(item, state) {
           isCard
             ? `https://gloapi.gitkraken.com/v1/glo/boards/${
                 state.boardId
-              }/cards/${item.id}`
+              }/cards/${item.id}?access_token=${accessToken}`
             : `https://gloapi.gitkraken.com/v1/glo/boards/${
                 state.boardId
-              }/cards/${state.id}/comments/${item.id}`,
+              }/cards/${state.id}/comments/${item.id}?access_token=${accessToken}`,
           {
             method: "POST",
             headers: new Headers({
