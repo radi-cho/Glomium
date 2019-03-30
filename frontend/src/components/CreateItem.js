@@ -150,7 +150,7 @@ class CreateItem extends React.Component {
           onChange={this.handleDescriptionChange}
         />
         <div style={{ textAlign: "center" }}>
-          Drag and drop file anywhere. Max 5 files x 15 MB
+          Drag and drop up to 5 files anywhere in this popup.
         </div>
         <div>
           <Button style={{ width: "44%" }} onClick={this.insertSelection}>
@@ -184,18 +184,20 @@ class CreateItem extends React.Component {
             />
           </label>
         )}
-
         {files.length
           ? files.map((f, i) => {
               return (
-                <div>
-                  <span
+                <div style={{ marginLeft: 5 }}>
+                  <b>Attachments:</b>
+                  {f.name || "screenshot"}{" "}
+                  <b
+                    style={{ cursor: "pointer" }}
                     onClick={() => {
                       this.removeItem(i);
                     }}
                   >
-                    {f.name || "screenshot"}
-                  </span>
+                    x
+                  </b>
                 </div>
               );
             })
