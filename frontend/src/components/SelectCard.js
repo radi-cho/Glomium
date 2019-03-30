@@ -47,6 +47,9 @@ class SelectCard extends Component {
 
     return (
       <>
+        <div>
+          <b>Select in which card to post a comment.</b>
+        </div>
         {cards &&
           (cards.length ? (
             cards.map(card => {
@@ -59,7 +62,12 @@ class SelectCard extends Component {
               );
             })
           ) : (
-            <b>No cards found.</b>
+            <>
+              <b>No cards found.</b>
+              <Link to={`/boards/new`}>
+                <Button>Let's create one!</Button>
+              </Link>
+            </>
           ))}
         {error && <header className="SelectCard-header">{error}</header>}
         {!cards && !error && "Loading..."}
