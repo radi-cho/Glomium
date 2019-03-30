@@ -8,7 +8,7 @@ const SelectColumn = ({ board, backMethod }) => {
   return (
     <>
       <div>
-        <b>{boardName}</b>
+        <b>Choose a column from the "{boardName}" board.</b>
       </div>
       {columns && columns.length ? (
         columns.map(column => {

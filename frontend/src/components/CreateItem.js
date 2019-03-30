@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "./Button";
 import { Input as RSGInput } from "rsg-components";
+import { Link } from "react-router-dom";
 import "../styles/CreateItem.css";
 
 /* global chrome */
@@ -124,7 +125,7 @@ class CreateItem extends React.Component {
   };
 
   render() {
-    const { files, name, description, isCard } = this.state;
+    const { files, name, description, isCard, boardId } = this.state;
     return (
       <form>
         {isCard && (
@@ -194,7 +195,15 @@ class CreateItem extends React.Component {
               );
             })
           : ""}
-        <Button onClick={this.publish}>Publish</Button>
+        <div>
+          <Button onClick={this.publish}>Publish</Button>
+          <Link to={isCard ? "/boards/new" : `/boards/${boardId}/cards/`}>
+            <Button>Back</Button>
+          </Link>
+          <Link to={`/`}>
+            <Button>Home</Button>
+          </Link>
+        </div>
       </form>
     );
   }
