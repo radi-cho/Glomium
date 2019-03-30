@@ -73,7 +73,7 @@ class SelectBoard extends Component {
                   );
                 })
               ) : (
-                <b>No boards found</b>
+                <b>No boards found.</b>
               )
             ) : (
               <b>Loading...</b>

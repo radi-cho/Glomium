@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import Button from "../components/Button";
 import InfoCard from "./InfoCard";
 
 /*global chrome*/
@@ -46,17 +48,29 @@ class SelectCard extends Component {
     return (
       <>
         {cards &&
-          cards.map(card => {
-            return (
-              <InfoCard
-                title={card.name}
-                redirect={`/boards/${boardId}/cards/${card.id}/comment`}
-                description={card.description && card.description.text}
-              />
-            );
-          })}
+          (cards.length ? (
+            cards.map(card => {
+              return (
+                <InfoCard
+                  title={card.name}
+                  redirect={`/boards/${boardId}/cards/${card.id}/comment`}
+                  description={card.description && card.description.text}
+                />
+              );
+            })
+          ) : (
+            <b>No cards found.</b>
+          ))}
         {error && <header className="SelectCard-header">{error}</header>}
         {!cards && !error && "Loading..."}
+        <div>
+          <Link to={`/boards/comment`}>
+            <Button>Back</Button>
+          </Link>
+          <Link to={`/`}>
+            <Button>Home</Button>
+          </Link>
+        </div>
       </>
     );
   }
