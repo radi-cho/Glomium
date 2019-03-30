@@ -3,6 +3,7 @@ import Button from "./Button";
 import { Input as RSGInput } from "rsg-components";
 import { Link } from "react-router-dom";
 import "../styles/CreateItem.css";
+import ItemCreated from "./ItemCreated";
 
 /* global chrome */
 const backgroundPage = chrome.extension.getBackgroundPage();
@@ -17,7 +18,8 @@ class CreateItem extends React.Component {
     id: this.props.match.params.id,
     files: [],
     isCard: this.props.match.params.role === "new",
-    warning: null
+    warning: null,
+    itemCreated: false
   };
 
   componentDidMount = () => {
@@ -49,7 +51,7 @@ class CreateItem extends React.Component {
       return;
     }
 
-    backgroundPage.publishItem(this.state);
+    backgroundPage.publishItem(this.state, this.createdCallback);
   };
 
   insertText = str => {
@@ -145,94 +147,129 @@ class CreateItem extends React.Component {
     }
   };
 
+  createdCallback = (isOK, itemId) => {
+    if (isOK === true) {
+      const { isCard, id, boardId } = this.state;
+      this.setState({
+        itemCreated: {
+          isOK: true,
+          cardId: isCard ? itemId : id,
+          boardId: boardId
+        }
+      });
+    } else {
+      this.setState({
+        itemCreated: {
+          isOK: false,
+          errorMessage: isOK
+        }
+      });
+    }
+  };
+
   render() {
-    const { files, name, description, isCard, boardId, warning } = this.state;
+    const {
+      files,
+      name,
+      description,
+      isCard,
+      boardId,
+      warning,
+      itemCreated
+    } = this.state;
+
     return (
-      <form>
-        {isCard && (
-          <RSGInput
-            type="text"
-            placeholder="Name"
-            value={name}
-            onChange={this.handleNameChange}
-          />
-        )}
-        <textarea
-          id="text"
-          placeholder={`${
-            isCard ? "Description." : "Comment."
-          } Markdown allowed.`}
-          value={description}
-          onChange={this.handleDescriptionChange}
-        />
-        <div style={{ textAlign: "center" }}>
-          Drag and drop up to 5 files anywhere in this popup.
-        </div>
-        <div>
-          <Button style={{ width: "44%" }} onClick={this.insertSelection}>
-            Insert selection
-          </Button>
-          <Button style={{ width: "50%" }} onClick={this.insertURL}>
-            Insert current URL
-          </Button>
-        </div>
-        <div>
-          <label id="choose_file">
-            <input
-              type="file"
-              multiple="multiple"
-              style={{ display: "none" }}
-              onChange={this.fileInputHandler}
-            />
-            Choose file
-          </label>
-          <Button style={{ width: "60%" }} onClick={this.capture}>
-            Capture screenshot
-          </Button>
-        </div>
-        {files.length < 5 && (
-          <label>
-            <input
-              type="file"
-              multiple="multiple"
-              style={{ display: "none" }}
-              onChange={this.fileInputHandler}
-            />
-          </label>
-        )}
-        {files.length ? (
-          <>
-            <b>Attachments:</b>
-            {files.map((f, i) => {
-              return (
-                <div style={{ marginLeft: 5 }}>
-                  {f.name || "screenshot"}{" "}
-                  <b
-                    style={{ cursor: "pointer" }}
-                    onClick={() => {
-                      this.removeItem(i);
-                    }}
-                  >
-                    x
-                  </b>
-                </div>
-              );
-            })}
-          </>
+      <>
+        {itemCreated ? (
+          <ItemCreated data={itemCreated} />
         ) : (
-          ""
+          <form>
+            {isCard && (
+              <RSGInput
+                type="text"
+                placeholder="Name"
+                value={name}
+                onChange={this.handleNameChange}
+              />
+            )}
+            <textarea
+              id="text"
+              placeholder={`${
+                isCard ? "Description." : "Comment."
+              } Markdown allowed.`}
+              value={description}
+              onChange={this.handleDescriptionChange}
+            />
+            <div style={{ textAlign: "center" }}>
+              Drag and drop up to 5 files anywhere in this popup.
+            </div>
+            <div>
+              <Button style={{ width: "44%" }} onClick={this.insertSelection}>
+                Insert selection
+              </Button>
+              <Button style={{ width: "50%" }} onClick={this.insertURL}>
+                Insert current URL
+              </Button>
+            </div>
+            <div>
+              <label id="choose_file">
+                <input
+                  type="file"
+                  multiple="multiple"
+                  style={{ display: "none" }}
+                  onChange={this.fileInputHandler}
+                />
+                Choose file
+              </label>
+              <Button style={{ width: "60%" }} onClick={this.capture}>
+                Capture screenshot
+              </Button>
+            </div>
+            {files.length < 5 && (
+              <label>
+                <input
+                  type="file"
+                  multiple="multiple"
+                  style={{ display: "none" }}
+                  onChange={this.fileInputHandler}
+                />
+              </label>
+            )}
+            {files.length ? (
+              <>
+                <b>Attachments:</b>
+                {files.map((f, i) => {
+                  return (
+                    <div style={{ marginLeft: 5 }}>
+                      {f.name || "screenshot"}{" "}
+                      <b
+                        style={{ cursor: "pointer" }}
+                        onClick={() => {
+                          this.removeItem(i);
+                        }}
+                      >
+                        x
+                      </b>
+                    </div>
+                  );
+                })}
+              </>
+            ) : (
+              ""
+            )}
+            <div>
+              {warning && <div style={{ marginLeft: 5 }}>{warning}</div>}
+              <Button onClick={this.publish}>Publish</Button>
+              <Link to={isCard ? "/boards/new" : `/boards/${boardId}/cards/`}>
+                <Button>Back</Button>
+              </Link>
+              <Link to={`/`}>
+                <Button>Home</Button>
+              </Link>
+            </div>
+          </form>
         )}
-        <div>
-          {warning && <div style={{ marginLeft: 5 }}>{warning}</div>}
-          <Button onClick={this.publish}>Publish</Button>
-          <Link to={isCard ? "/boards/new" : `/boards/${boardId}/cards/`}>
-            <Button>Back</Button>
-          </Link>
-          <Link to={`/`}>
-            <Button>Home</Button>
-          </Link>
-        </div>
-      </form>
+      </>
     );
   }
 }

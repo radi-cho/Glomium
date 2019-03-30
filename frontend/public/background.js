@@ -83,16 +83,17 @@ var fetchItem = state => {
   }
 };
 
-var publishItem = state => {
+var publishItem = (state, createdCallback) => {
   attachmentCount = 0;
   fetchItem(state)
     .then(response => {
       response.json().then(item => {
         publishAttachment(item, state);
+        createdCallback(true, item.id);
       });
     })
     .catch(err => {
-      console.log(err.message);
+      createdCallback(err.message);
     });
 };
 
