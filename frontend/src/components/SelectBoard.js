@@ -40,6 +40,11 @@ class SelectBoard extends Component {
       });
   }
 
+  backMethod = e => {
+    e.preventDefault();
+    this.setState({ selectColumn: false });
+  };
+
   render() {
     const props = this.props;
     const { boards, error, selectColumn } = this.state;
@@ -49,7 +54,7 @@ class SelectBoard extends Component {
     return (
       <>
         {selectColumn ? (
-          <SelectColumn board={selectColumn} />
+          <SelectColumn board={selectColumn} backMethod={this.backMethod} />
         ) : (
           <>
             <div>
@@ -87,7 +92,9 @@ class SelectBoard extends Component {
             >
               Manage your boards
             </Button>
-            <Link to={`/`}><Button>Back</Button></Link>
+            <Link to={`/`}>
+              <Button>Back</Button>
+            </Link>
           </>
         )}
       </>
