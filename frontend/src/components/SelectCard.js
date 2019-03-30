@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import InfoCard from "./InfoCard";
 
+/*global chrome*/
+var backgroundPage = chrome.extension.getBackgroundPage();
+
 class SelectCard extends Component {
   constructor(props) {
     super(props);
@@ -12,10 +15,9 @@ class SelectCard extends Component {
     const boardId = props.match.params.boardId;
     if (boardId) {
       fetch(
-        `https://gloapi.gitkraken.com/v1/glo/boards/${boardId}/cards?fields=board_id&fields=description&fields=name`,
-        {
-          credentials: "include"
-        }
+        `https://gloapi.gitkraken.com/v1/glo/boards/${boardId}/cards?access_token=${
+          backgroundPage.accessToken
+        }&fields=board_id&fields=description&fields=name`
       )
         .then(response => {
           if (response.status !== 200) {
@@ -46,11 +48,11 @@ class SelectCard extends Component {
         {cards &&
           cards.map(card => {
             return (
-                <InfoCard
-                  title={card.name}
-                  redirect={`/boards/${boardId}/cards/${card.id}/comment`}
-                  description={card.description && card.description.text}
-                />
+              <InfoCard
+                title={card.name}
+                redirect={`/boards/${boardId}/cards/${card.id}/comment`}
+                description={card.description && card.description.text}
+              />
             );
           })}
         {error && <header className="SelectCard-header">{error}</header>}

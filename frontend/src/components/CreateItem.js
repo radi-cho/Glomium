@@ -28,7 +28,6 @@ class CreateItem extends React.Component {
   publish = ev => {
     ev.preventDefault();
     backgroundPage.publishItem(this.state);
-    console.log(this.state);
   };
 
   insertText = str => {
