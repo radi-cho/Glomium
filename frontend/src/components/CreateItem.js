@@ -24,6 +24,11 @@ class CreateItem extends React.Component {
     document
       .querySelector("body")
       .addEventListener("dragover", this.dragOverHandler);
+
+    if (backgroundPage.timerInComment) {
+      this.insertText(backgroundPage.timestamp);
+      backgroundPage.timerInComment = false;
+    }
   };
 
   publish = ev => {

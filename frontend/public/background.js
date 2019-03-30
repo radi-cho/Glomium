@@ -3,32 +3,33 @@ var timerSeconds = 0;
 var timestamp = "00:00:00";
 var interval = null;
 var timerAppUpdate = null;
+var timerInComment = false;
 
-function TimerStart() {
+var TimerStart = () => {
   if (!interval) interval = setInterval(TimerUpdate, 1000);
-}
+};
 
-function TimerStop() {
+var TimerStop = () => {
   if (interval !== null) {
     clearInterval(interval);
     interval = null;
   }
-}
+};
 
-function TimerReset() {
+var TimerReset = () => {
   TimerStop();
   timerSeconds = 0;
   TimerUpdate();
-}
+};
 
-function TimerUpdate() {
+var TimerUpdate = () => {
   timerSeconds += 1;
   timestamp = formatTime(timerSeconds);
   if (timerAppUpdate) timerAppUpdate(timestamp);
-}
+};
 
-function formatTime() {
-  const hours = Math.floor(timerSeconds / 3600),
+var formatTime = () => {
+  var hours = Math.floor(timerSeconds / 3600),
     minutes = Math.floor((timerSeconds %= 3600) / 60),
     seconds = timerSeconds % 60;
 
@@ -41,7 +42,7 @@ function formatTime() {
   }
 
   return "00:00:00";
-}
+};
 
 /// Attachment publishing
 var accessToken = "";
@@ -50,7 +51,9 @@ var attachmentCount = 0;
 var fetchItem = state => {
   if (state.isCard) {
     return fetch(
-      `https://gloapi.gitkraken.com/v1/glo/boards/${state.boardId}/cards?access_token=${accessToken}`,
+      `https://gloapi.gitkraken.com/v1/glo/boards/${
+        state.boardId
+      }/cards?access_token=${accessToken}`,
       {
         method: "POST",
         headers: new Headers({ "content-type": "application/json" }),
@@ -93,7 +96,7 @@ var publishItem = state => {
     });
 };
 
-function publishAttachment(item, state) {
+var publishAttachment = (item, state) => {
   if (!state.files[attachmentCount]) return;
   var isCard = state.isCard;
   var fd = new FormData();
@@ -122,7 +125,9 @@ function publishAttachment(item, state) {
               }/cards/${item.id}?access_token=${accessToken}`
             : `https://gloapi.gitkraken.com/v1/glo/boards/${
                 state.boardId
-              }/cards/${state.id}/comments/${item.id}?access_token=${accessToken}`,
+              }/cards/${state.id}/comments/${
+                item.id
+              }?access_token=${accessToken}`,
           {
             method: "POST",
             headers: new Headers({
@@ -149,4 +154,4 @@ function publishAttachment(item, state) {
     .catch(err => {
       console.log(err.message);
     });
-}
+};
