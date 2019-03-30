@@ -4,7 +4,7 @@ import InfoCard from "./InfoCard";
 
 class SelectColumn extends Component {
   render() {
-    const { columns, boardId, name: boardName } = this.props.board;
+    const { columns, id: boardId, name: boardName } = this.props.board;
     return (
       <>
         <div>
@@ -13,7 +13,7 @@ class SelectColumn extends Component {
         {columns &&
           columns.map(column => {
             return (
-              <Link to={`/boards/${boardId}/cards/new/${column.id}`}>
+              <Link to={`/boards/${boardId}/cards/${column.id}/new`}>
                 <InfoCard
                   title={column.name}
                   description="Click here to create card."

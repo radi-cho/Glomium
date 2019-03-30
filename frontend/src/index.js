@@ -15,10 +15,9 @@ ReactDOM.render(
   <Router>
     <Switch>
       <Route exact path="/" component={App} />
-      <Route path="/boards/:boardId/cards/:card/comment" component={Comment} />
-      <Route path="/boards/:boardId/cards/new/:columnId" component={CreateItem} />
+      <Route path="/boards/:boardId/cards/:id/:role" component={CreateItem} />
       {/* Select card to leave comment: */}
-      <Route path="/boards/:boardId/cards" component={SelectCard} />
+      <Route path="/boards/:boardId/cards/" component={SelectCard} />
       <Route path="/boards/:purpose" component={SelectBoard} />
       {/* Specialized pages for timer and screenshots. */}
       <Route path="/timer" component={Timer} />

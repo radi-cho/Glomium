@@ -13,9 +13,12 @@ class SelectBoard extends Component {
       error: null
     };
 
-    fetch("https://gloapi.gitkraken.com/v1/glo/boards?fields=columns&fields=name", {
-      credentials: "include"
-    })
+    fetch(
+      "https://gloapi.gitkraken.com/v1/glo/boards?fields=columns&fields=name",
+      {
+        credentials: "include"
+      }
+    )
       .then(response => {
         if (response.status !== 200) {
           this.setState({

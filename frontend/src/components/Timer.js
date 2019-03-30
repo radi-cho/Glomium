@@ -8,7 +8,7 @@ class Timer extends React.Component {
     this.backgroundPage = chrome.extension.getBackgroundPage();
     this.backgroundPage.timerAppUpdate = this.Update;
     this.state = {
-      seconds: this.backgroundPage.seconds
+      timestamp: this.backgroundPage.timestamp
     };
   }
 
@@ -24,24 +24,24 @@ class Timer extends React.Component {
     this.backgroundPage.TimerReset();
   };
 
-  Update = seconds => {
-    this.setState({ seconds: seconds ? seconds : "0" });
+  Update = timestamp => {
+    this.setState({ timestamp: timestamp });
   };
 
   render() {
     const { Start, Stop, Reset, state } = this;
     return (
-      <div>
-        <div>
-          <Button onClick={Start}>Start</Button>
-        </div>
-        <div>
-          <Button onClick={Reset}>Reset</Button>
-        </div>
-        <div>
-          <Button onClick={Stop}>Stop</Button>
-        </div>
-        {state.seconds}
+      <div style={{ textAlign: "center" }}>
+        <Button style={{ width: "30%" }} onClick={Start}>
+          Start
+        </Button>
+        <Button style={{ width: "30%" }} onClick={Reset}>
+          Reset
+        </Button>
+        <Button style={{ width: "30%" }} onClick={Stop}>
+          Stop
+        </Button>
+        <div id="time">{state.timestamp}</div>
       </div>
     );
   }

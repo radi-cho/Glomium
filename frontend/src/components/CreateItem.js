@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "../components/Button";
+import Button from "./Button";
 import { Input as RSGInput } from "rsg-components";
 import "../styles/CreateItem.css";
 
@@ -11,9 +11,11 @@ class CreateItem extends React.Component {
     name: "",
     description: "",
     boardId: this.props.match.params.boardId,
-    columnId: this.props.match.params.columnId,
+    // id - the id of a column if creating a new card,
+    // or the id of a card if posting a comment.
+    id: this.props.match.params.id,
     files: [],
-    isCard: true
+    isCard: this.props.match.params.role === "new"
   };
 
   componentDidMount = () => {
@@ -25,7 +27,8 @@ class CreateItem extends React.Component {
 
   publish = ev => {
     ev.preventDefault();
-    backgroundPage.publishAttachment(this.state);
+    backgroundPage.publishItem(this.state);
+    console.log(this.state);
   };
 
   insertText = str => {
@@ -35,8 +38,7 @@ class CreateItem extends React.Component {
     const text = textarea.value;
     const before = text.substring(0, start);
     const after = text.substring(end, text.length);
-    textarea.value = before + str + after;
-    textarea.selectionStart = textarea.selectionEnd = start + str.length;
+    this.setState({ description: before + str + after });
     textarea.focus();
   };
 
@@ -123,18 +125,22 @@ class CreateItem extends React.Component {
   };
 
   render() {
-    const { files, name, description } = this.state;
+    const { files, name, description, isCard } = this.state;
     return (
       <form>
-        <RSGInput
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={this.handleNameChange}
-        />
+        {isCard && (
+          <RSGInput
+            type="text"
+            placeholder="Name"
+            value={name}
+            onChange={this.handleNameChange}
+          />
+        )}
         <textarea
           id="text"
-          placeholder="Description. Markdown allowed."
+          placeholder={`${
+            isCard ? "Description." : "Comment."
+          } Markdown allowed.`}
           value={description}
           onChange={this.handleDescriptionChange}
         />

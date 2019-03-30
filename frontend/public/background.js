@@ -1,5 +1,6 @@
 /// Timer
-var seconds = 0;
+var timerSeconds = 0;
+var timestamp = "00:00:00";
 var interval = null;
 var timerAppUpdate = null;
 
@@ -15,79 +16,136 @@ function TimerStop() {
 }
 
 function TimerReset() {
-  TimerStart();
-  seconds = 0;
-  timerAppUpdate();
+  TimerStop();
+  timerSeconds = 0;
+  TimerUpdate();
 }
 
 function TimerUpdate() {
-  seconds += 1;
-  // Ensure timerUpdate is method and if so, call it
-  if (timerAppUpdate) timerAppUpdate(seconds);
+  timerSeconds += 1;
+  timestamp = formatTime(timerSeconds);
+  if (timerAppUpdate) timerAppUpdate(timestamp);
+}
+
+function formatTime() {
+  const hours = Math.floor(timerSeconds / 3600),
+    minutes = Math.floor((timerSeconds %= 3600) / 60),
+    seconds = timerSeconds % 60;
+
+  if (hours || seconds || minutes) {
+    return (
+      (hours ? (hours < 9 ? "0" + hours : hours) + ":" : "00:") +
+      (minutes ? (minutes < 9 ? "0" + minutes : minutes) + ":" : "00:") +
+      (seconds < 9 ? "0" + seconds : seconds)
+    );
+  }
+
+  return "00:00:00";
 }
 
 /// Attachment publishing
-var publishAttachment = state => {
-  var i = 0;
-  function forE(card) {
-    if (!state.files[i]) var fd = new FormData();
-    fd.append("file", file);
+var attachmentCount = 0;
 
-    fetch(
+var fetchItem = state => {
+  if (state.isCard) {
+    return fetch(
+      `https://gloapi.gitkraken.com/v1/glo/boards/${state.boardId}/cards`,
+      {
+        method: "POST",
+        headers: new Headers({ "content-type": "application/json" }),
+        body: JSON.stringify({
+          name: state.name,
+          position: 0,
+          description: {
+            text: state.description
+          },
+          column_id: state.id
+        })
+      }
+    );
+  } else {
+    return fetch(
       `https://gloapi.gitkraken.com/v1/glo/boards/${state.boardId}/cards/${
-        card.id
-      }/attachments`,
-      { method: "POST", body: fd }
-    )
-      .then(response => {
-        response.json().then(attachment => {
-          card.description.text += `\n ![${attachment.filename}](${
-            attachment.url
-          })`;
-          fetch(
-            `https://gloapi.gitkraken.com/v1/glo/boards/${
-              state.boardId
-            }/cards/${card.id}`,
-            {
-              method: "POST",
-              headers: new Headers({
-                "content-type": "application/json"
-              }),
-              body: JSON.stringify({
-                description: {
-                  text: card.description.text
-                }
-              })
-            }
-          ).then(() => {
-            i++;
-            forE(card);
-          });
-        });
-      })
-      .catch(err => {
-        console.log(err.message);
-      });
+        state.id
+      }/comments`,
+      {
+        method: "POST",
+        headers: new Headers({ "content-type": "application/json" }),
+        body: JSON.stringify({
+          text: state.description
+        })
+      }
+    );
   }
+};
 
-  fetch(`https://gloapi.gitkraken.com/v1/glo/boards/${state.boardId}/cards`, {
-    method: "POST",
-    headers: new Headers({ "content-type": "application/json" }),
-    body: JSON.stringify({
-      name: state.name,
-      position: 0,
-      description: {
-        text: state.description
-      },
-      column_id: state.columnId
-    })
-  })
+var publishItem = state => {
+  attachmentCount = 0;
+  fetchItem(state)
     .then(response => {
-      response.json().then(card => {
-        forE(card);
+      response.json().then(item => {
+        publishAttachment(item, state);
       });
     })
     .catch(err => {
       console.log(err.message);
     });
 };
+
+function publishAttachment(item, state) {
+  if (!state.files[attachmentCount]) return;
+  var isCard = state.isCard;
+  var fd = new FormData();
+  fd.append("file", state.files[attachmentCount]);
+
+  fetch(
+    `https://gloapi.gitkraken.com/v1/glo/boards/${state.boardId}/cards/${
+      isCard ? item.id : state.id
+    }/attachments`,
+    { method: "POST", body: fd }
+  )
+    .then(response => {
+      response.json().then(attachment => {
+        if (isCard) {
+          item.description.text += `\n ![${attachment.filename}](${
+            attachment.url
+          })`;
+        } else {
+          item.text += `\n ![${attachment.filename}](${attachment.url})`;
+        }
+
+        fetch(
+          isCard
+            ? `https://gloapi.gitkraken.com/v1/glo/boards/${
+                state.boardId
+              }/cards/${item.id}`
+            : `https://gloapi.gitkraken.com/v1/glo/boards/${
+                state.boardId
+              }/cards/${state.id}/comments/${item.id}`,
+          {
+            method: "POST",
+            headers: new Headers({
+              "content-type": "application/json"
+            }),
+            body: JSON.stringify(
+              isCard
+                ? {
+                    description: {
+                      text: item.description.text
+                    }
+                  }
+                : {
+                    text: item.text
+                  }
+            )
+          }
+        ).then(() => {
+          attachmentCount++;
+          publishAttachment(item, state);
+        });
+      });
+    })
+    .catch(err => {
+      console.log(err.message);
+    });
+}
