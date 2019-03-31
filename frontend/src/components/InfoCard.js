@@ -16,7 +16,7 @@ const Card = ({ title, description, redirect, history, clickHandler }) => {
     const trimmed = description.trim();
     if (trimmed)
       description =
-        trimmed.length > 29 ? trimmed.substring(0, 26) + "..." : trimmed;
+        trimmed.length > 26 ? trimmed.substring(0, 25) + "..." : trimmed;
   } else {
     description = "No description provided.";
   }
