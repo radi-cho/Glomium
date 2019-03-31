@@ -30,7 +30,7 @@ exports.auth = (req, res) => {
 
       if (body && body.access_token && body.token_type === "Bearer") {
         res.redirect(
-          "https://oaoiphpipnjpnbhjnmbkbpjdbeelafef.chromiumapp.org" +
+          "https://kcljglmcpcclmgohehfpdphcfiikkoln.chromiumapp.org" +
             "/?token=" +
             body.access_token +
             "&state=" +

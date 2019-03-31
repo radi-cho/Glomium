@@ -1,14 +1,14 @@
 {
   "short_name": "Glomium",
-  "name": "GitKraken Glo in Chromium",
+  "name": "Glomium",
   "manifest_version": 2,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "permissions": [
     "declarativeContent",
     "identity",
     "activeTab",
     "storage",
-    "*://oaoiphpipnjpnbhjnmbkbpjdbeelafef.chromiumapp.org/",
+    "*://kcljglmcpcclmgohehfpdphcfiikkoln.chromiumapp.org/",
     "https://gloapi.gitkraken.com/"
   ],
   "browser_action": {
