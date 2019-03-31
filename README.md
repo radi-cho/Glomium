@@ -21,6 +21,7 @@ https://github.com/radi-cho/Glomium
 ![demo](https://storage.googleapis.com/glomium-storage/glo1.gif)
 
 ### File & screenshot attachments
+#### Drag and Drop files, use "Choose file" button or attach screenshot with single click!
 - [Demo screencast here](https://storage.googleapis.com/glomium-storage/glo2.gif)
 
 ### Comment posting
